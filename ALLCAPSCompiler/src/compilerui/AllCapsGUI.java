@@ -12,6 +12,9 @@ import java.io.*;
 import java.io.File.*;
 import java.util.*;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.LineNumbersTextPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class AllCapsGUI extends javax.swing.JFrame {
 
@@ -20,6 +23,12 @@ public class AllCapsGUI extends javax.swing.JFrame {
      */
     public AllCapsGUI() {
         initComponents();
+        chooser = new JFileChooser();
+        allCapsFilter = new FileNameExtensionFilter("ALLCAPS file","allcaps");
+        lineNums = new TextLineNumber(editorTextArea);
+        jScrollPane2.setRowHeaderView(lineNums);
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.addChoosableFileFilter(allCapsFilter);
     }
 
     /**
@@ -97,7 +106,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,21 +118,22 @@ public class AllCapsGUI extends javax.swing.JFrame {
 
     private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
         // TODO add your handling code here:
+        JFileChooser openFile = new JFileChooser();
+        
     }//GEN-LAST:event_newMenuItemActionPerformed
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
         try{
-            JFileChooser loadEmp = new JFileChooser();//new dialog
             File selectedFile;//needed*
             BufferedReader in;//needed*
             FileReader reader = null;//needed*,look these three up for further info
    
             //opens dialog if button clicked
-            if (loadEmp.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)
+            if (chooser.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)
             {
             //gets file from dialog
-            selectedFile = loadEmp.getSelectedFile();
+            selectedFile = chooser.getSelectedFile();
             //makes sure files can be processed before proceeding
                 if (selectedFile.canRead() && selectedFile.exists())
                 {
@@ -181,16 +191,16 @@ public class AllCapsGUI extends javax.swing.JFrame {
   {
       
     // These are generic variable names.. From some old tutorial :)
-    JFileChooser loadEmp = new JFileChooser();
+    
     File selectedFile;
     BufferedReader in;
     FileWriter writer = null;
    
     
-    if (loadEmp.showSaveDialog(this)==JFileChooser.APPROVE_OPTION)
+    if (chooser.showSaveDialog(this)==JFileChooser.APPROVE_OPTION)
     {
      
-      selectedFile = loadEmp.getSelectedFile();
+      selectedFile = chooser.getSelectedFile();
       this.setTitle(this.getTitle() + " - " + selectedFile.getName());
        BufferedWriter out = new BufferedWriter(new FileWriter(selectedFile));
         out.write(editorTextArea.getText());
@@ -254,6 +264,9 @@ public class AllCapsGUI extends javax.swing.JFrame {
             }
         });
     }
+    private TextLineNumber lineNums;
+    private final JFileChooser chooser;
+    private final javax.swing.filechooser.FileFilter allCapsFilter;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu compileMenu;
     private javax.swing.JTextArea editorTextArea;
