@@ -93,7 +93,7 @@ public class textEditorFrame extends javax.swing.JFrame {
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
       
-        try
+  try
   {
     JFileChooser loadEmp = new JFileChooser();//new dialog
     File selectedFile;//needed*

@@ -8,6 +8,11 @@ package compilerui;
  *
  * @author Jullian
  */
+import java.io.*;
+import java.io.File.*;
+import java.util.*;
+import javax.swing.JFileChooser;
+
 public class AllCapsGUI extends javax.swing.JFrame {
 
     /**
@@ -26,26 +31,65 @@ public class AllCapsGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        editorTextArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        fileMenu = new javax.swing.JMenu();
+        newMenuItem = new javax.swing.JMenuItem();
+        openMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
+        saveAsMenuItem = new javax.swing.JMenuItem();
+        exitMenuItem = new javax.swing.JMenuItem();
+        compileMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ALLCAPS Compiler");
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        editorTextArea.setColumns(20);
+        editorTextArea.setRows(5);
+        jScrollPane2.setViewportView(editorTextArea);
 
-        jMenu2.setText("Compile");
-        jMenuBar1.add(jMenu2);
+        fileMenu.setText("File");
 
-        jMenu3.setText("Exit");
-        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu3MouseClicked(evt);
+        newMenuItem.setText("New");
+        newMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newMenuItemActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu3);
+        fileMenu.add(newMenuItem);
+
+        openMenuItem.setText("Open");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openMenuItem);
+
+        saveMenuItem.setText("Save");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveMenuItem);
+
+        saveAsMenuItem.setText("Save As..");
+        fileMenu.add(saveAsMenuItem);
+
+        exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitMenuItem);
+
+        jMenuBar1.add(fileMenu);
+
+        compileMenu.setText("Compile");
+        jMenuBar1.add(compileMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -53,20 +97,121 @@ public class AllCapsGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+    private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newMenuItemActionPerformed
+
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        // TODO add your handling code here:
+        try{
+            JFileChooser loadEmp = new JFileChooser();//new dialog
+            File selectedFile;//needed*
+            BufferedReader in;//needed*
+            FileReader reader = null;//needed*,look these three up for further info
+   
+            //opens dialog if button clicked
+            if (loadEmp.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)
+            {
+            //gets file from dialog
+            selectedFile = loadEmp.getSelectedFile();
+            //makes sure files can be processed before proceeding
+                if (selectedFile.canRead() && selectedFile.exists())
+                {
+                    reader = new FileReader(selectedFile);
+                    this.setTitle(this.getTitle() + " - " + selectedFile.getName());
+                }
+            }
+
+        in = new BufferedReader(reader);
+
+            //inputLine recieves file text
+            String inputLine = in.readLine();
+            int LineNumber = 0;
+
+            editorTextArea.setText("");
+
+            while(inputLine!=null)
+            {
+            //LineNumber isn't needed, but it adds a line count on the left, nice
+            LineNumber++;
+            StringTokenizer tokenizer = new StringTokenizer(inputLine);
+
+
+            addText(inputLine + "\n");
+            //next line in File opened
+            inputLine = in.readLine();
+            }
+            //close stream, files stops loading
+            in.close();
+        }
+        //catches input/output exceptions and all subclasses exceptions
+        catch(IOException ex)
+        {
+            addText("Error occured :\n" + ex.getMessage()+"\n");
+        }
+        catch(NullPointerException ne){
+            addText("NullPointerException..");
+        }
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         // TODO add your handling code here:
         System.exit(0);
-    }//GEN-LAST:event_jMenu3MouseClicked
+    }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void addText(String text)
+    {
+        editorTextArea.setText(editorTextArea.getText() + text);
+        
+    }    
+    
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        // TODO add your handling code here:
+        try
+  {
+      
+    // These are generic variable names.. From some old tutorial :)
+    JFileChooser loadEmp = new JFileChooser();
+    File selectedFile;
+    BufferedReader in;
+    FileWriter writer = null;
+   
+    
+    if (loadEmp.showSaveDialog(this)==JFileChooser.APPROVE_OPTION)
+    {
+     
+      selectedFile = loadEmp.getSelectedFile();
+      this.setTitle(this.getTitle() + " - " + selectedFile.getName());
+       BufferedWriter out = new BufferedWriter(new FileWriter(selectedFile));
+        out.write(editorTextArea.getText());
+         out.close();
+      
+    }
+   
+  
+    
+  }
+  //catches input/output exceptions and all subclasses exceptions
+  catch(IOException ex)
+  {
+    addText("Error occured :\n" + ex.getMessage()+"\n");
+  }
+  //catches nullpointer exception, file not found
+  catch(NullPointerException ex)
+  {
+    addText("NullpointerException...");
+  }
+    }//GEN-LAST:event_saveMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -110,9 +255,15 @@ public class AllCapsGUI extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu compileMenu;
+    private javax.swing.JTextArea editorTextArea;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem saveAsMenuItem;
+    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 }
