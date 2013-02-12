@@ -11,6 +11,8 @@ package compilerui;
 import java.io.*;
 import java.io.File.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.LineNumbersTextPane;
@@ -50,6 +52,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         compileMenu = new javax.swing.JMenu();
+        compileMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ALLCAPS Compiler");
@@ -98,6 +101,15 @@ public class AllCapsGUI extends javax.swing.JFrame {
         jMenuBar1.add(fileMenu);
 
         compileMenu.setText("Compile");
+
+        compileMenuItem.setText("Compile..");
+        compileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compileMenuItemActionPerformed(evt);
+            }
+        });
+        compileMenu.add(compileMenuItem);
+
         jMenuBar1.add(compileMenu);
 
         setJMenuBar(jMenuBar1);
@@ -223,6 +235,11 @@ public class AllCapsGUI extends javax.swing.JFrame {
   }
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
+    private void compileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileMenuItemActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_compileMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -269,6 +286,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
     private final javax.swing.filechooser.FileFilter allCapsFilter;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu compileMenu;
+    private javax.swing.JMenuItem compileMenuItem;
     private javax.swing.JTextArea editorTextArea;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
