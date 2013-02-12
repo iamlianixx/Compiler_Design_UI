@@ -25,12 +25,12 @@ public class AllCapsGUI extends javax.swing.JFrame {
      */
     public AllCapsGUI() {
         initComponents();
-        chooser = new JFileChooser();
-        allCapsFilter = new FileNameExtensionFilter("ALLCAPS file","allcaps");
+        chooser = new JFileChooser("C:/");
+        allCapsFilter = new ALLCAPSFilter();
         lineNums = new TextLineNumber(editorTextArea);
         jScrollPane2.setRowHeaderView(lineNums);
-        chooser.setAcceptAllFileFilterUsed(false);
-        chooser.addChoosableFileFilter(allCapsFilter);
+      //  chooser.setAcceptAllFileFilterUsed(true);
+        chooser.setFileFilter(allCapsFilter);
     }
 
     /**
@@ -182,7 +182,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
             addText("Error occured :\n" + ex.getMessage()+"\n");
         }
         catch(NullPointerException ne){
-            addText("NullPointerException..");
+            ne.printStackTrace();
         }
     }//GEN-LAST:event_openMenuItemActionPerformed
 
@@ -211,7 +211,6 @@ public class AllCapsGUI extends javax.swing.JFrame {
     
     if (chooser.showSaveDialog(this)==JFileChooser.APPROVE_OPTION)
     {
-     
       selectedFile = chooser.getSelectedFile();
       this.setTitle("ALLCAPS Compiler - " + selectedFile.getName());
        BufferedWriter out = new BufferedWriter(new FileWriter(selectedFile));
@@ -231,7 +230,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
   //catches nullpointer exception, file not found
   catch(NullPointerException ex)
   {
-    addText("NullpointerException...");
+    ex.printStackTrace();
   }
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
@@ -283,7 +282,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
     }
     private TextLineNumber lineNums;
     private final JFileChooser chooser;
-    private final javax.swing.filechooser.FileFilter allCapsFilter;
+    private final ALLCAPSFilter allCapsFilter;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu compileMenu;
     private javax.swing.JMenuItem compileMenuItem;
