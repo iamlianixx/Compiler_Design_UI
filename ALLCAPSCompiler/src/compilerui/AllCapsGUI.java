@@ -102,7 +102,11 @@ public class AllCapsGUI extends javax.swing.JFrame {
 
         compileMenu.setText("Compile");
 
+<<<<<<< HEAD
         compileMenuItem.setText("Compile..");
+=======
+        compileMenuItem.setText("Compile");
+>>>>>>> origin/devbranch
         compileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 compileMenuItemActionPerformed(evt);
@@ -236,7 +240,11 @@ public class AllCapsGUI extends javax.swing.JFrame {
 
     private void compileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileMenuItemActionPerformed
         // TODO add your handling code here:
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/devbranch
     }//GEN-LAST:event_compileMenuItemActionPerformed
 
     /**
