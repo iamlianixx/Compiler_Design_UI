@@ -201,7 +201,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
     {
      
       selectedFile = chooser.getSelectedFile();
-      this.setTitle(this.getTitle() + " - " + selectedFile.getName());
+      this.setTitle("ALLCAPS Compiler - " + selectedFile.getName());
        BufferedWriter out = new BufferedWriter(new FileWriter(selectedFile));
         out.write(editorTextArea.getText());
          out.close();
