@@ -55,7 +55,11 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="compileMenuItem">
               <Properties>
+<<<<<<< HEAD
                 <Property name="text" type="java.lang.String" value="Compile"/>
+=======
+                <Property name="text" type="java.lang.String" value="Compile.."/>
+>>>>>>> origin/master
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="compileMenuItemActionPerformed"/>
