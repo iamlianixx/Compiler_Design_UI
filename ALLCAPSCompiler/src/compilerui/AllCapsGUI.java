@@ -25,12 +25,12 @@ public class AllCapsGUI extends javax.swing.JFrame {
      */
     public AllCapsGUI() {
         initComponents();
-        chooser = new JFileChooser("C:/");
-        allCapsFilter = new ALLCAPSFilter();
+        chooser = new JFileChooser();
+        allCapsFilter = new FileNameExtensionFilter("ALLCAPS file","allcaps");
         lineNums = new TextLineNumber(editorTextArea);
         jScrollPane2.setRowHeaderView(lineNums);
-      //  chooser.setAcceptAllFileFilterUsed(true);
-        chooser.setFileFilter(allCapsFilter);
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.addChoosableFileFilter(allCapsFilter);
     }
 
     /**
@@ -102,11 +102,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
 
         compileMenu.setText("Compile");
 
-<<<<<<< HEAD
         compileMenuItem.setText("Compile");
-=======
-        compileMenuItem.setText("Compile..");
->>>>>>> origin/master
         compileMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 compileMenuItemActionPerformed(evt);
@@ -186,7 +182,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
             addText("Error occured :\n" + ex.getMessage()+"\n");
         }
         catch(NullPointerException ne){
-            ne.printStackTrace();
+            addText("NullPointerException..");
         }
     }//GEN-LAST:event_openMenuItemActionPerformed
 
@@ -215,6 +211,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
     
     if (chooser.showSaveDialog(this)==JFileChooser.APPROVE_OPTION)
     {
+     
       selectedFile = chooser.getSelectedFile();
       this.setTitle("ALLCAPS Compiler - " + selectedFile.getName());
        BufferedWriter out = new BufferedWriter(new FileWriter(selectedFile));
@@ -234,23 +231,13 @@ public class AllCapsGUI extends javax.swing.JFrame {
   //catches nullpointer exception, file not found
   catch(NullPointerException ex)
   {
-    ex.printStackTrace();
+    addText("NullpointerException...");
   }
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void compileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileMenuItemActionPerformed
         // TODO add your handling code here:
-<<<<<<< HEAD
-        Reader text = new StringReader(editorTextArea.getText());
-        AssignmentLexer lex = new AssignmentLexer();
-        try {
-            lex.assignment(new StreamTokenizer(text));
-        } catch (IOException ex) {
-            Logger.getLogger(AllCapsGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-=======
-
->>>>>>> origin/master
+        
     }//GEN-LAST:event_compileMenuItemActionPerformed
 
     /**
@@ -296,7 +283,7 @@ public class AllCapsGUI extends javax.swing.JFrame {
     }
     private TextLineNumber lineNums;
     private final JFileChooser chooser;
-    private final ALLCAPSFilter allCapsFilter;
+    private final javax.swing.filechooser.FileFilter allCapsFilter;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu compileMenu;
     private javax.swing.JMenuItem compileMenuItem;
