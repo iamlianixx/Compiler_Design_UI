@@ -201,7 +201,8 @@ public class LookupTable {
         nonterminals = new ArrayList(Arrays.asList(nonterminalsList));
         productionList = new ArrayList(Arrays.asList(productions));
         map = new ArrayList(Arrays.asList(mapArray));
-        symbols.indexOf("num_id");
+        System.out.println(symbols.indexOf("num_id"));
+        System.out.println(nonterminals.indexOf("<condition'>"));
     }
     
         public String retrieveProduction(String symbol, String nonterminal){
