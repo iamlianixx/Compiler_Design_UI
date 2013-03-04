@@ -36,7 +36,7 @@ public class Compiler_Design_Logic {
         Reader given = new StringReader("int a=3-5-6-8;");
         AssignmentLexer lex = new AssignmentLexer();
         lex.assignment(new StreamTokenizer(given));
-    
+        LookupTable l = new LookupTable();
     }
 }
 
