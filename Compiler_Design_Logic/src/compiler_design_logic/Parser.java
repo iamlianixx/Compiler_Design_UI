@@ -23,6 +23,7 @@ public class Parser {
         temp = new ArrayList(Arrays.asList(tokens));
         x = new LookupTable();
         Collections.reverse(temp);
-        
+        temp.get(0).printList();
     }
+
 }
