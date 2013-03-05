@@ -1,29 +1,59 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package compiler_design_logic;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Stack;
+import java.util.StringTokenizer;
 
-/**
- *
- * @author Jullian
- */
+
 public class Parser {
-    private LookupTable x;
-    private Stack<LinkList> tokenList;
-    
-    public Parser(LinkList[] tokens){
-        ArrayList<LinkList> temp;
-        temp = new ArrayList(Arrays.asList(tokens));
-        x = new LookupTable();
-        Collections.reverse(temp);
-        temp.get(0).printList();
-    }
+	private Stack<String> inputStack;
+	private Stack<String> prodStack;
+	private String production;
+	private String[] prodTokens;
+	private StringTokenizer tokens;
+	private LookupTable lookUp;
+	private boolean isError = false;
+
+	public Parser(String[] input) {
+		for(int i = 0; i <= input.length; i++)
+			inputStack.push(input[i]);
+		prodStack.push("E");
+		this.lookUp = new LookupTable();
+	}
+	
+	public boolean LLParser(){
+		while(!isError && !inputStack.isEmpty()){
+			production = lookUp.retrieveProduction(inputStack.peek(), prodStack.peek()); //retrieves the corresponding production
+			if(production.equals("null"))
+				isError = true;
+			else {
+				tokens = new StringTokenizer(production);
+				if(tokens.countTokens() > 1){												//if retrieved production has more than 1 token
+					for(int i = 0; tokens.hasMoreTokens(); i++)
+						prodTokens[i] = tokens.nextToken();
+					prodStack.pop();
+					for(int i = 0; i < prodTokens.length; i++)
+						prodStack.push(prodTokens[i]);
+				}else {
+					prodStack.pop();
+					prodStack.push(production);
+				}
+			}
+					
+			if(inputStack.peek().equals(prodStack.peek())){
+				inputStack.pop();
+				prodStack.pop();
+			} else {
+				if(lookUp.isTerminal(prodStack.peek()))								//if input and production are both terminals but does not match
+					isError = true;
+				else if(prodStack.peek().equals("EPSILON"))
+					prodStack.pop();
+			}
+		}
+		
+		if(!inputStack.isEmpty())
+			isError = true;
+		
+		return isError;
+	}
 
 }

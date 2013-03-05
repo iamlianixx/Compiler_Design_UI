@@ -15,6 +15,11 @@ class DictionaryEntry{
     private String token;
     private String tokentype;
 
+    public DictionaryEntry(String token, String tokentype){
+        this.token = token;
+        this.tokentype = tokentype;
+    }
+    
     public String getToken() {
         return token;
     }
@@ -36,6 +41,10 @@ public class TokenDictionary {
     ArrayList<DictionaryEntry> dictionary;
     
     public TokenDictionary(){
+        dictionary = new ArrayList<>();
         
+        dictionary.add(new DictionaryEntry("FUNC","<function"));
     }
+    
+    
 }
