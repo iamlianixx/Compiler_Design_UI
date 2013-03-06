@@ -114,7 +114,8 @@ public class Lexical {
 
                 if(i!=0 && (lexemes.get(i-1).equals("VAR") || (lexemes.get(i-1).equals("FUNC") && 
                     (lexemes.get(i-2).equals("INT") || lexemes.get(i-2).equals("CHR")
-                     || lexemes.get(i-2).equals("FLT") || lexemes.get(i-2).equals("STR"))))){
+                     || lexemes.get(i-2).equals("FLT") || lexemes.get(i-2).equals("STR") || 
+                        lexemes.get(i-2).equals("VOID"))))){
                     String dtype = lexemes.get(i-2);
                     String scope = (lexemes.get(i-1).equals("FUNC"))?"null":locationScope;
                     this.symbolTable.insert("var_id", current, dtype, scope);
@@ -166,13 +167,16 @@ public class Lexical {
     }
 
     public static void main(String[] args){
-        Lexical lex = new Lexical("INT FUNC samplefunc(INT given){ STR VAR string = \"Apple\";"
-                + " INT VAR sum = 1; CHR VAR char = '3';  FLT VAR float = 0.2; sum = sum + given; RETURN sum; }MAIN{ INT "
+        Lexical lex = new Lexical("VOID FUNC samplefunc(INT given){ STR VAR string = \"Apple\";"
+                + " INT VAR sum = 1; CHR char = '3';  FLT VAR float = 0.2; sum = sum + given; RETURN sum; }MAIN{ INT "
                 + "VAR x = 0; IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
         lex.generateLexemes();
-        lex.fillSymbolTable();
+        ArrayList<Token> next = lex.fillSymbolTable();
         lex.display();
         lex.symbolTable.display();
-  
+        Parser p = new Parser(next);
+       // boolean check = p.LLParser();
+       // if(check == true)
+       //     System.out.println("Wrong syntax.");
     }
 }

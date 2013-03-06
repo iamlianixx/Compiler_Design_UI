@@ -114,7 +114,8 @@ public class Lexical {
 
                 if(i!=0 && (lexemes.get(i-1).equals("VAR") || (lexemes.get(i-1).equals("FUNC") && 
                     (lexemes.get(i-2).equals("INT") || lexemes.get(i-2).equals("CHR")
-                     || lexemes.get(i-2).equals("FLT") || lexemes.get(i-2).equals("STR"))))){
+                     || lexemes.get(i-2).equals("FLT") || lexemes.get(i-2).equals("STR")) || 
+                        lexemes.get(i-2).equals("VOID")))){
                     String dtype = lexemes.get(i-2);
                     String scope = (lexemes.get(i-1).equals("FUNC"))?"null":locationScope;
                     this.symbolTable.insert("var_id", current, dtype, scope);
