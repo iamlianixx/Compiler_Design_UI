@@ -61,6 +61,7 @@ public class TokenDictionary {
         dictionary.add(new DictionaryEntry("CHR","datatype"));
         dictionary.add(new DictionaryEntry("FLT","datatype"));
         dictionary.add(new DictionaryEntry("STR","datatype"));
+        dictionary.add(new DictionaryEntry("VOID","datatype"));
         
         //keywords
         dictionary.add(new DictionaryEntry("FUNC","keyword"));

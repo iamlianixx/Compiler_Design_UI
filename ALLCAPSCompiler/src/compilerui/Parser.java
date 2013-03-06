@@ -1,4 +1,4 @@
-package compiler_design_logic;
+package compilerui;
 
 import java.util.*;
 
@@ -7,7 +7,6 @@ public class Parser {
 	private Stack<Token> inputStack;
 	private Stack<String> prodStack;
 	private String production;
-	private String[] prodTokens;
 	private StringTokenizer token;
 	private LookupTable lookUp;
 	private boolean isError = false;
@@ -15,7 +14,6 @@ public class Parser {
 	public Parser(ArrayList<Token> input) {
                 this.inputStack = new Stack<Token>();
                 this.prodStack = new Stack<String>();
-                this.prodTokens = new String[10];
 		this.inputStack.addAll(input);
                 Collections.reverse(this.inputStack);
 		prodStack.push("<program>");
@@ -47,6 +45,7 @@ public class Parser {
                 }catch(EmptyStackException e){
                     isError = true;
                 }
+               System.out.println(); 
             }
             
             if(inputStack.empty() && !prodStack.empty())

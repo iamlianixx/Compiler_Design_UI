@@ -240,8 +240,16 @@ public class AllCapsGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         Lexical lex = new Lexical(editorTextArea.getText(),new SymbolTable());
         lex.generateLexemes();
-        lex.fillSymbolTable();
+        ArrayList<Token> tok = lex.fillSymbolTable();
         lex.symbolTable.display();
+        Parser p = new Parser(tok);
+        boolean check = p.LLParser();
+           if(check == true){
+               System.out.println("Syntax Error!");
+           } else {
+               System.out.println("CONGRATS!");
+           }
+       
     }//GEN-LAST:event_compileMenuItemActionPerformed
 
     /**

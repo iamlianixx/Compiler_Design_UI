@@ -167,16 +167,15 @@ public class Lexical {
     }
 
     public static void main(String[] args){
-        Lexical lex = new Lexical("VOID FUNC samplefunc(INT given){ STR VAR string = \"Apple\";"
-                + " INT VAR sum = 1; CHR char = '3';  FLT VAR float = 0.2; sum = sum + given; RETURN sum; }MAIN{ INT "
-                + "VAR x = 0; IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
+        Lexical lex = new Lexical("MAIN{IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
         lex.generateLexemes();
         ArrayList<Token> next = lex.fillSymbolTable();
         lex.display();
         lex.symbolTable.display();
         Parser p = new Parser(next);
-       // boolean check = p.LLParser();
-       // if(check == true)
-       //     System.out.println("Wrong syntax.");
+        boolean check = p.LLParser();
+        if(check == true)
+           System.out.println("Wrong syntax.");
+        else System.out.println("CONGRATS!");
     }
 }

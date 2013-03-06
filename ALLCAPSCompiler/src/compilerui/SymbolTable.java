@@ -141,10 +141,10 @@ public class SymbolTable {
     public void display(){
         System.out.println("SYMBOL TABLE");
         System.out.println();
-        System.out.println("Token\t\tValue\t\tData Type\tScope");
+        System.out.println("Token\t\t\tValue\t\t\tData Type\t\t\tScope");
         for(int i=0; i<table.size(); i++){
-            System.out.println(table.get(i).getToken() + "\t\t" + table.get(i).getTokenVal()
-                    + "\t\t" + table.get(i).getDataType() + "\t\t" + table.get(i).getScope());
+            System.out.println(table.get(i).getToken() + "\t\t\t" + table.get(i).getTokenVal()
+                    + "\t\t\t" + table.get(i).getDataType() + "\t\t\t" + table.get(i).getScope());
         }
     }
 }
