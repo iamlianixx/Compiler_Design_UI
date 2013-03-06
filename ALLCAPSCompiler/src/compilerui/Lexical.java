@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package compiler_design_logic;
+package compilerui;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -154,25 +154,5 @@ public class Lexical {
            (lastLex.equals("NOT") || lastLex.equals("=") || lastLex.equals(">") 
                 || lastLex.equals("<"))) res = true;
         return res;
-    }
-
-    public void display(){
-        System.out.println("LIST OF LEXEMES");
-        for(int i=0; i<lexemes.size(); i++)
-            System.out.println(lexemes.get(i));
-        System.out.println("LIST OF TOKENS");
-        for(int i=0; i<tokens.size(); i++)
-            System.out.println(tokens.get(i).getToken());
-    }
-
-    public static void main(String[] args){
-        Lexical lex = new Lexical("INT FUNC samplefunc(INT given){ STR VAR string = \"Apple\";"
-                + " INT VAR sum = 1; CHR VAR char = '3';  FLT VAR float = 0.2; sum = sum + given; RETURN sum; }MAIN{ INT "
-                + "VAR x = 0; IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
-        lex.generateLexemes();
-        lex.fillSymbolTable();
-        lex.display();
-        lex.symbolTable.display();
-  
     }
 }

@@ -238,7 +238,10 @@ public class AllCapsGUI extends javax.swing.JFrame {
 
     private void compileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileMenuItemActionPerformed
         // TODO add your handling code here:
-
+        Lexical lex = new Lexical(editorTextArea.getText(),new SymbolTable());
+        lex.generateLexemes();
+        lex.fillSymbolTable();
+        lex.symbolTable.display();
     }//GEN-LAST:event_compileMenuItemActionPerformed
 
     /**

@@ -31,7 +31,7 @@ public class LookupTable {
         String[] symbolList = {"char_id","num_id","string_id","var_id", ";", 
         "_",".", "=", ",", "{","}", "(", ")","+", "-", "/", "*", "<", ">", "'",
         "\"","AND", "OR", "NOT", "INT", "CHR","FLT", "STR", "VAR", "FUNC", "MAIN", 
-        "IF", "THEN", "WHILE", "ELSE", "$", "RETURN"};
+        "IF", "THEN", "WHILE", "ELSE", "$", "RETURN", "PRINT"};
         String[] nonterminalsList = {
         "<character>",
         "<number>",
@@ -73,7 +73,8 @@ public class LookupTable {
         "<functionSet>",
         "<program>",
         "<returnStatement>",
-        "<returnStatement'>"};
+        "<returnStatement'>",
+        "<printStatement>"};
         String[] productions = {
         "char_id", 
         "num_id", 
@@ -162,7 +163,11 @@ public class LookupTable {
         "RETURN <returnStatement'>",
         "<varname>",
         "<value>",
-        "<returnStatement>"};
+        "<returnStatement>",
+        "PRINT ( <printStatement'> ) ;",
+        "<value>",
+        "<varname>",
+        "<printStatement>"};
         
         LookupMapRow[] mapArray = {new LookupMapRow(0,0,0), new LookupMapRow(1,1,1),
     new LookupMapRow(2,2,2), new LookupMapRow(3,3,3), new LookupMapRow(4,4,6),
@@ -211,7 +216,9 @@ public class LookupTable {
     new LookupMapRow(29,37,80), new LookupMapRow(29,38,81), new LookupMapRow(29,11,82),
     new LookupMapRow(30,37,83), new LookupMapRow(36,20,87), new LookupMapRow(36,39,84),
     new LookupMapRow(1,40,86), new LookupMapRow(3,40,85), new LookupMapRow(11,40,86),
-    new LookupMapRow(19,40,86), new LookupMapRow(20,40,86)};
+    new LookupMapRow(19,40,86), new LookupMapRow(20,40,86), new LookupMapRow(37,20,91),
+    new LookupMapRow(37,41,88), new LookupMapRow(1,42,89), new LookupMapRow(3,42,90),
+    new LookupMapRow(11,42,89), new LookupMapRow(19,42,89), new LookupMapRow(20,42,89)};
        
         symbols = new ArrayList(Arrays.asList(symbolList));
         nonterminals = new ArrayList(Arrays.asList(nonterminalsList));
@@ -253,6 +260,6 @@ public class LookupTable {
         
     public static void main(String[] args){
         LookupTable look = new LookupTable();
-        System.out.println(look.retrieveProduction("MAIN", "<functionSet>"));
+        System.out.println(look.retrieveProduction("PRINT", "<statement>"));
     }
 }
