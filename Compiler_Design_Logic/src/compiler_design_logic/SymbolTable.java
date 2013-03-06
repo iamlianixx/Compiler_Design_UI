@@ -74,7 +74,9 @@ class SymbolTableEntry{
         this.parameterValues.add(new ParameterEntry(datatype, value));
     }
 
-    
+    public String getDataType(){
+        return dataType;
+    }
     
     public void setDataType(String dataType) {
         this.dataType = dataType;

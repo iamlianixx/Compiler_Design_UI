@@ -58,7 +58,7 @@ public class Lexical {
            StringTokenizer tk = new StringTokenizer(codeArray[i],removeSpacesDelim, true);
            while(tk.hasMoreTokens()){
                String st = tk.nextToken();
-               if(!lexemes.isEmpty() && checkNotRelationalAndDoubleDelim(st)){
+               if(!lexemes.isEmpty() && notRelationalAndDoubleDelimChecker(st)){
                    lexemes.set(lexemes.size()-1, lexemes.get(lexemes.size()-1)+st);
                }
                else lexemes.add(st);
@@ -68,7 +68,7 @@ public class Lexical {
 
     public ArrayList<Token> fillSymbolTable(){
         String locationScope = "";
-
+        
         for(int i=0; i<lexemes.size(); i++){
             String current = lexemes.get(i);
             if(current.equals("MAIN")){
@@ -80,34 +80,39 @@ public class Lexical {
             
             Token placeholder = new Token();
             String lexType = td.extractType(current);
-            if(lexType != null){
+            if(lexType != null){ 
                 placeholder.setToken(current);
-                System.out.println("Current: " + placeholder.getToken());
-                if(lexType.equals("keyword")){
-                    if(placeholder.getToken().equals("FUNC")){
-                        if(i!=0 && (lexemes.get(i-1).equals("INT") || 
-                            lexemes.get(i-1).equals("CHR") || lexemes.get(i-1).equals("FLT")
-                                || lexemes.get(i-1).equals("STR")))
-                            placeholder.setToken("<functionDeclaration>");
-                        else placeholder.setToken("<functionCall>");
-                    }
-                    else if(placeholder.getToken().equals("MAIN"))
-                        placeholder.setToken("<MainFunction>");
-                    else if(placeholder.getToken().equals("IF"))
-                        placeholder.setToken("<IfStatement>");
-                    else if(placeholder.getToken().equals("ELSE"))
-                        placeholder.setToken("<elseStatement>");
-                    else if(placeholder.getToken().equals("RETURN"))
-                        placeholder.setToken("<returnStatement>");
-                }
+            //    System.out.println("Current: " + placeholder.getToken());
+             //   System.err.println(current);
+            } else if(tokens.size()>0 && isInteger(current) && (!tokens.get(tokens.size()-1).equals("'"))){
+                System.out.println(current);
+                placeholder.setToken(current);
             }
             this.tokens.add(placeholder);
         }
         return this.tokens;
     }
+    
+    private boolean isInteger(String given){
+        try{
+            Integer.parseInt(given);
+        }catch(NumberFormatException ex){
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean isFloat(String given){
+        try{
+            Float.parseFloat(given);
+        }catch(NumberFormatException ex){
+            return false;
+        }
+        return true;
+    }
 
     
-    public boolean checkNotRelationalAndDoubleDelim(String delim){
+    public boolean notRelationalAndDoubleDelimChecker(String delim){
         boolean res=false;
         String lastLex = lexemes.get(lexemes.size()-1);
         if(delim.equals("=") && 
@@ -123,8 +128,9 @@ public class Lexical {
     }
 
     public static void main(String[] args){
-        Lexical lex = new Lexical("INT FUNC samplefunc(INT given){ INT sum = 1; sum = sum + given; }MAIN{ INT "
-                + "VAR x = 0; IF(x >= 0) THEN { x = x + 1; }}",new SymbolTable());
+        Lexical lex = new Lexical("INT FUNC samplefunc(INT given){ STR string = \"Apple\";"
+                + " INT sum = 1; CHR char = '3';  sum = sum + given; RETURN sum; }MAIN{ INT "
+                + "VAR x = 0; IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
         lex.generateLexemes();
         lex.fillSymbolTable();
         //lex.display();

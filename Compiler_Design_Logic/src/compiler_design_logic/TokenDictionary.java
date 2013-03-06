@@ -50,6 +50,17 @@ public class TokenDictionary {
         dictionary.add(new DictionaryEntry(",","<symbol>"));
         dictionary.add(new DictionaryEntry("","<symbol>"));
         dictionary.add(new DictionaryEntry(",","<symbol>"));
+        dictionary.add(new DictionaryEntry("(","<symbol>"));
+        dictionary.add(new DictionaryEntry(")","<symbol>"));
+        dictionary.add(new DictionaryEntry("{","<symbol>"));
+        dictionary.add(new DictionaryEntry("}","<symbol>"));
+        dictionary.add(new DictionaryEntry(";","<symbol>"));
+        
+        //datatypes
+        dictionary.add(new DictionaryEntry("INT","datatype"));
+        dictionary.add(new DictionaryEntry("CHR","datatype"));
+        dictionary.add(new DictionaryEntry("FLT","datatype"));
+        dictionary.add(new DictionaryEntry("STR","datatype"));
         
         //keywords
         dictionary.add(new DictionaryEntry("FUNC","keyword"));
@@ -68,8 +79,6 @@ public class TokenDictionary {
         dictionary.add(new DictionaryEntry("NOT=","<relational>"));
         dictionary.add(new DictionaryEntry(">","<relational>"));
         dictionary.add(new DictionaryEntry("<","<relational>"));
-        dictionary.add(new DictionaryEntry(">=","<relational>"));
-        dictionary.add(new DictionaryEntry("<=","<relational>"));
         
         //arithmetic operators
         dictionary.add(new DictionaryEntry("+","<arithmetic>"));
@@ -80,19 +89,15 @@ public class TokenDictionary {
         //assignment
         dictionary.add(new DictionaryEntry("=","<variableDeclaration'>"));
         
-        //identifiers
-        dictionary.add(new DictionaryEntry("char_id","<character>"));
-        dictionary.add(new DictionaryEntry("var_id","<varname>"));
-        dictionary.add(new DictionaryEntry("num_id","<number>"));
-        dictionary.add(new DictionaryEntry("string_id","<string>"));
     }
     
     public String extractType(String val){
        String result = null;
        int i;
-        for(i=0; i<dictionary.size() && dictionary.get(i).getToken().equals(val); i++);
-        if(i<dictionary.size())
+        for(i=0; i<dictionary.size() && !dictionary.get(i).getToken().equals(val); i++);
+        if(i<dictionary.size()){
             result = dictionary.get(i).getTokentype();
+        }
        return result;
     }
 }
