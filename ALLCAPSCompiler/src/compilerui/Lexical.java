@@ -166,16 +166,4 @@ public class Lexical {
             System.out.println(tokens.get(i).getToken());
     }
 
-    public static void main(String[] args){
-        Lexical lex = new Lexical("MAIN{IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
-        lex.generateLexemes();
-        ArrayList<Token> next = lex.fillSymbolTable();
-        lex.display();
-        lex.symbolTable.display();
-        Parser p = new Parser(next);
-        boolean check = p.LLParser();
-        if(check == true)
-           System.out.println("Wrong syntax.");
-        else System.out.println("CONGRATS!");
-    }
 }

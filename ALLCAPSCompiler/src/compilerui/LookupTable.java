@@ -165,13 +165,13 @@ public class LookupTable {
         "RETURN <returnStatement'>",
         "<varname>",
         "<value>",
-        "<returnStatement>",
+        "<returnStatement> <statement>",
         "PRINT ( <printStatement'> ) ;",
         "<value>",
         "<varname>",
-        "<printStatement>",
+        "<printStatement> <statement>",
         "VOID",
-        "<varname> <assignmentStatement> ;",
+        "<varname> <assignmentStatement> ; <statement>",
         "<number>"};
         
         LookupMapRow[] mapArray = {new LookupMapRow(0,0,0), new LookupMapRow(1,1,1),

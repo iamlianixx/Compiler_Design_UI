@@ -44,8 +44,7 @@ public class Parser {
                    }
                 }catch(EmptyStackException e){
                     isError = true;
-                }
-               System.out.println(); 
+                } 
             }
             
             if(inputStack.empty() && !prodStack.empty())

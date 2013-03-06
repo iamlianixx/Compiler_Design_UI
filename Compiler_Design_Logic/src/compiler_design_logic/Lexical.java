@@ -176,6 +176,12 @@ public class Lexical {
         boolean check = p.LLParser();
         if(check == true)
            System.out.println("Wrong syntax.");
-        else System.out.println("CONGRATS!");
+        else { 
+            System.out.println("CONGRATS!");
+            ParseTree pTree = p.getTree();
+            ASTConverter ast = new ASTConverter();
+            ast.convertTree(pTree.getRoot());
+            ast.displayAST(pTree.getRoot());
+        }
     }
 }
