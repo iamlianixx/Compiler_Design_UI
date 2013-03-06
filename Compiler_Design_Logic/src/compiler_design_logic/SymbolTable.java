@@ -7,24 +7,75 @@ package compiler_design_logic;
 import java.util.ArrayList;
 
 
+
+
 /**
  *
  * @author Jullian
  */
+class ParameterEntry{
+    private String datatype;
+    private String value;
+
+    public ParameterEntry(String datatype, String value) {
+        this.datatype = datatype;
+        this.value = value;
+    }
+
+    
+    public String getDatatype() {
+        return datatype;
+    }
+
+    public void setDatatype(String datatype) {
+        this.datatype = datatype;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+    
+    
+}
+
+
 class SymbolTableEntry{
-    private String token, tokenVal, dataType, scope;
+    private String token;
+    private String tokenVal;
+    private String dataType; //is also used for return types for functions
+    private String scope;
+    private String actualValue;
+    private ArrayList<ParameterEntry> parameterValues; //only used when token is a function
     
     SymbolTableEntry(String token, String value, String datatype, String scope){
         this.token = token;
-        this.tokenVal = tokenVal;
+        this.tokenVal = value;
         this.dataType = datatype;
         this.scope = scope;
     }
 
-    public String getDataType() {
-        return dataType;
+    public String getActualValue() {
+        return actualValue;
     }
 
+    public void setActualValue(String actualValue) {
+        this.actualValue = actualValue;
+    }
+
+    public ArrayList<ParameterEntry> getParameterValues() {
+        return parameterValues;
+    }
+
+    public void setParameterValues(String datatype, String value) {
+        this.parameterValues.add(new ParameterEntry(datatype, value));
+    }
+
+    
+    
     public void setDataType(String dataType) {
         this.dataType = dataType;
     }
@@ -75,6 +126,7 @@ public class SymbolTable {
         SymbolTableEntry entry = new SymbolTableEntry(token,tokenvalue,datatype,scope);
         this.table.add(entry);
     }
+    
     
     public int lastIndex(){
         return this.table.size()-1;

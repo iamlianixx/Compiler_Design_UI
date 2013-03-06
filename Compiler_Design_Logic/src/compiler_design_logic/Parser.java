@@ -16,7 +16,7 @@ public class Parser {
 	public Parser(String[] input) {
 		for(int i = 0; i <= input.length; i++)
 			inputStack.push(input[i]);
-		prodStack.push("E");
+		prodStack.push("<program>");
 		this.lookUp = new LookupTable();
 	}
 	
