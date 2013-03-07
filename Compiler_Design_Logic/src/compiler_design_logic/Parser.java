@@ -1,4 +1,4 @@
-package compiler_design_logic;
+package compilerui;
 
 import java.util.*;
 
@@ -9,8 +9,6 @@ public class Parser {
 	private String production;
 	private StringTokenizer token;
 	private LookupTable lookUp;
-        private ParseTree tree;
-        private ParseNode nodePtr;
 	private boolean isError = false;
 
 	public Parser(ArrayList<Token> input) {
@@ -20,7 +18,6 @@ public class Parser {
                 Collections.reverse(this.inputStack);
 		prodStack.push("<program>");
 		this.lookUp = new LookupTable();
-                this.initializeParseTree();
 	}
 	
 	public boolean LLParser(){
@@ -28,7 +25,6 @@ public class Parser {
             while(!isError && !inputStack.isEmpty()){
                 try{
                    if(prodStack.peek().equals(inputStack.peek().getToken())){
-                       moveTreePtr();
                        inputStack.pop();
                        prodStack.pop();
                    }else {
@@ -39,16 +35,7 @@ public class Parser {
                            if(token.countTokens()>1){
                                isError = this.separateProds(prod);
                            } else {
-                                   if(!prodStack.peek().equals(inputStack.peek().getToken())){
-                                       String[] temp = new String[10];
-                                       temp[0] = prod;
-                                       this.nodePtr.setChildren(this.gatherChildren(nodePtr, temp));
-                                       int index = this.nodePtr.fetchChildIndex(prod);
-                                       this.nodePtr = this.nodePtr.getChildren().get(index);
-                                   }
-                                       
-                                    moveTreePtr();
-                                    prodStack.pop();
+                               prodStack.pop();
                                if(!prod.equals("EPSILON"))
                                     prodStack.push(prod);
                            }
@@ -57,7 +44,7 @@ public class Parser {
                    }
                 }catch(EmptyStackException e){
                     isError = true;
-                }
+                } 
             }
             
             if(inputStack.empty() && !prodStack.empty())
@@ -66,18 +53,6 @@ public class Parser {
             return isError;
 	}
         
-    public void initializeParseTree(){
-        this.tree = new ParseTree();
-        this.nodePtr = this.tree.getRoot();
-    }    
-    
-    private ArrayList<ParseNode> gatherChildren(ParseNode parent, String[] prodlist){
-        ArrayList childSet = new ArrayList<ParseNode>();
-        for(int i=0; i<prodlist.length; i++)
-            childSet.add(new ParseNode(prodlist[i], parent));
-        return childSet;
-    }
-    
     public boolean separateProds(String given){
         boolean error = false;
         if(given == null)
@@ -85,35 +60,10 @@ public class Parser {
         else {
             prodStack.pop();
             String[] prodArr = given.split(" ");
-            nodePtr.setChildren(this.gatherChildren(nodePtr, prodArr));
-            for(int i=prodArr.length-1; i>=0; i--){
+            for(int i=prodArr.length-1; i>=0; i--)
                 prodStack.push(prodArr[i]);
-            }
         }
         return error;
-    }
-    
-    public void moveTreePtr(){
-        boolean valid = false;
-        while(valid == false && !nodePtr.getNodeData().equals("<program>")){
-            String current = this.nodePtr.getNodeData();
-            if(current.equals("num_id") || current.equals("string_id") || 
-                    current.equals("char_id") || current.equals("var_id")){
-                    nodePtr.setNodeData(inputStack.peek().getInfo());
-                    current = nodePtr.getNodeData();
-            }
-            nodePtr = nodePtr.getParent();
-            int currentNdx = nodePtr.fetchChildIndex(current);
-            
-            if(currentNdx+1 < nodePtr.fetchChildrenCtr()){
-                nodePtr = nodePtr.getChildren().get(currentNdx+1);
-                valid = true;
-            }
-        }
-    }
-        
-    public ParseTree getTree(){
-        return this.tree;
     }
 
     public void displayStacks(){
