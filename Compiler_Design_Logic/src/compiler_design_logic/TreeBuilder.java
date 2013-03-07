@@ -42,7 +42,7 @@ public class TreeBuilder {
             for(int i=0; i<pArray.retrieveEntryWithIndex(index).getTokenChildren().size(); i++)
                 temp.add(new ParseNode(pArray.retrieveEntryWithIndex(index).getTokenChildren().get(i),nodePtr));
             nodePtr.setChildren(temp);
-            tkaempPtr = nodePtr;
+            tempPtr = nodePtr;
             for(int i=0; i<tempPtr.getChildren().size(); i++){
                if(look.isNonTerminal(nodePtr.getChildren().get(i).getNodeData())){
                    nodePtr = nodePtr.getChildren().get(i);
