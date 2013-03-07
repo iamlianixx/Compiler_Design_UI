@@ -21,12 +21,13 @@ public class ASTConverter {
         ArrayList<ParseNode> temp = n.getChildren();
         if(n.getNodeData().equals("EPSILON"))
             n.setNodeData("^");
-        
-        int i;
-        for(i=0; i<look.nonterminals.size() 
-                && n.getNodeData().equals(look.nonterminals.get(i)); i++);
-          if(i<look.nonterminals.size())
-              n.setNodeData("^");
+        boolean check = false;
+        for(int i=0; check == false && i< look.nonterminals.size(); i++){
+            if(n.getNodeData().equals(look.nonterminals.get(i))){
+                n.setNodeData("^");
+                check = true;
+            }
+        }
           
           for(ParseNode child : temp){
               convertTree(child);

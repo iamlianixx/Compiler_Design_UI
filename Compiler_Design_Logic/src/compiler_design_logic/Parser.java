@@ -1,4 +1,4 @@
-package compilerui;
+package compiler_design_logic;
 
 import java.util.*;
 
@@ -9,6 +9,7 @@ public class Parser {
 	private String production;
 	private StringTokenizer token;
 	private LookupTable lookUp;
+        private ParseArray pArray;
 	private boolean isError = false;
 
 	public Parser(ArrayList<Token> input) {
@@ -18,6 +19,7 @@ public class Parser {
                 Collections.reverse(this.inputStack);
 		prodStack.push("<program>");
 		this.lookUp = new LookupTable();
+                this.pArray = new ParseArray();
 	}
 	
 	public boolean LLParser(){
@@ -28,19 +30,23 @@ public class Parser {
                        inputStack.pop();
                        prodStack.pop();
                    }else {
+                       ParseEntry p = new ParseEntry(prodStack.peek());
                        String prod = lookUp.retrieveProduction(inputStack.peek().getToken(), prodStack.peek());
                        if(prod == null) isError = true;
                        else{
                            token = new StringTokenizer(prod);
                            if(token.countTokens()>1){
-                               isError = this.separateProds(prod);
+                               isError = this.separateProds(prod,p);
                            } else {
                                prodStack.pop();
-                               if(!prod.equals("EPSILON"))
+                                p.addChildToken(prod);
+                               if(!prod.equals("EPSILON")){
                                     prodStack.push(prod);
+                               }
                            }
                            
                        }
+                       pArray.insertParseEntry(p);
                    }
                 }catch(EmptyStackException e){
                     isError = true;
@@ -53,13 +59,19 @@ public class Parser {
             return isError;
 	}
         
-    public boolean separateProds(String given){
+   public ParseArray getParseArray(){
+       return this.pArray;
+   }     
+        
+    public boolean separateProds(String given, ParseEntry parent){
         boolean error = false;
         if(given == null)
             error = true;
         else {
             prodStack.pop();
             String[] prodArr = given.split(" ");
+            for(int i=0; i<prodArr.length; i++)
+                parent.addChildToken(prodArr[i]);
             for(int i=prodArr.length-1; i>=0; i--)
                 prodStack.push(prodArr[i]);
         }

@@ -46,11 +46,13 @@ public class ParseNode {
     }
 
     public int fetchChildIndex(String given){
-        int index = -1,i;
-        for(i=0; i<this.children.size() && 
-                this.children.get(i).getNodeData().equals(given); i++);
-        if(i<this.children.size())
-            index = i;
+        int index = -1; boolean check = false;
+        for(int i=0; check == false && i<children.size(); i++){
+            if(this.children.get(i).getNodeData().equals(given)){
+                check = true;
+                index = i;
+            }
+        }
         return index;
     }
 

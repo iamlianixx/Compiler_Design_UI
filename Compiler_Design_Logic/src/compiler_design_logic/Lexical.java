@@ -167,7 +167,7 @@ public class Lexical {
     }
 
     public static void main(String[] args){
-        Lexical lex = new Lexical("MAIN{IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
+        Lexical lex = new Lexical("MAIN{INT VAR x = 2; IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
         lex.generateLexemes();
         ArrayList<Token> next = lex.fillSymbolTable();
         lex.display();
@@ -178,10 +178,13 @@ public class Lexical {
            System.out.println("Wrong syntax.");
         else { 
             System.out.println("CONGRATS!");
-            ParseTree pTree = p.getTree();
-            ASTConverter ast = new ASTConverter();
-            ast.convertTree(pTree.getRoot());
-            ast.displayAST(pTree.getRoot());
+            ParseArray pArray = p.getParseArray();
+            TreeBuilder b = new TreeBuilder(pArray);
+            b.buildTree();
+        //    ParseTree tree =p.grabTree();
+        //    ASTConverter ast = new ASTConverter();
+         //   ast.convertTree(tree.getRoot());
+        //    ast.displayAST(tree.getRoot());
         }
     }
 }
