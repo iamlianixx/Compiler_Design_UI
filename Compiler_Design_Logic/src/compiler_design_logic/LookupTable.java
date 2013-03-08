@@ -260,12 +260,14 @@ public class LookupTable {
         return res;
     }
         
-    public boolean isNonTerminal(String in){
-        boolean flag = false;
-        int i;
-        for(i = 0; i < nonterminals.size() && !in.equals(nonterminals.get(i)); i++);
-        if(i<nonterminals.size()) flag = true;
-        return flag;
-       }
+    public boolean isTerminal(String prod){
+        boolean check = false;
+        for(int i=0; check == false && i<this.symbols.size(); i++){
+            if(prod.equals(this.symbols.get(i))){
+                check = true;
+            }
+        }
+        return check;
+    }
         
 }

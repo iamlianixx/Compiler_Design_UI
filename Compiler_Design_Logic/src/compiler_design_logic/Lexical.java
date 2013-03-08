@@ -178,13 +178,10 @@ public class Lexical {
            System.out.println("Wrong syntax.");
         else { 
             System.out.println("CONGRATS!");
-            ParseArray pArray = p.getParseArray();
-            TreeBuilder b = new TreeBuilder(pArray);
-            b.buildTree();
-        //    ParseTree tree =p.grabTree();
-        //    ASTConverter ast = new ASTConverter();
-         //   ast.convertTree(tree.getRoot());
-        //    ast.displayAST(tree.getRoot());
+              ParseTree tree =p.grabTree();
+              ASTConverter ast = new ASTConverter();
+              ast.convertTree(tree.getRoot());
+              ast.displayAST(tree.getRoot());
         }
     }
 }

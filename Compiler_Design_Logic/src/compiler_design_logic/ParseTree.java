@@ -4,6 +4,8 @@
  */
 package compiler_design_logic;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jullian
@@ -19,5 +21,11 @@ public class ParseTree {
         return root;
     }
     
-    
+    public void displayTree(ParseNode n){
+        System.out.println("Parent: " + n.getNodeData());
+        ArrayList<ParseNode> children = n.getChildren();
+        for(ParseNode node : children){
+            displayTree(node);
+        }
+    }
 }

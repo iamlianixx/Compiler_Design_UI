@@ -39,7 +39,9 @@ public class ASTConverter {
         System.out.println("Parent: " + p.getNodeData());
         ArrayList<ParseNode> temp = p.getChildren();
         
-        for(ParseNode child : temp)
+        for(ParseNode child : temp){
+            System.out.println("CHILDREN:");
             displayAST(child);
+        }
     }
 }
