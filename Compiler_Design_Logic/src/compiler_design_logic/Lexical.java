@@ -167,7 +167,7 @@ public class Lexical {
     }
 
     public static void main(String[] args){
-        Lexical lex = new Lexical("MAIN{INT VAR x = 2; IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
+        Lexical lex = new Lexical("INT FUNC samplefunc(INT given){ INT VAR sum = 1; sum = sum + given; RETURN sum; }MAIN{INT VAR x = 2; IF(x >= 0) THEN { x = x + 1; } FUNC samplefunc(5);}",new SymbolTable());
         lex.generateLexemes();
         ArrayList<Token> next = lex.fillSymbolTable();
         lex.display();

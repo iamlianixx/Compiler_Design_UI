@@ -162,7 +162,7 @@ public class LookupTable {
         "<functionSet> <MainFunction>",
         "<functionCall>",
         "EPSILON",
-        "RETURN <returnStatement'>",
+        "RETURN <returnStatement'> ;",
         "<varname>",
         "<value>",
         "<returnStatement> <statement>",
