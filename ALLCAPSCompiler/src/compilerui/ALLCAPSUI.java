@@ -42,7 +42,6 @@ public class ALLCAPSUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         outputTextArea = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        progressLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         compileMenu = new javax.swing.JMenu();
         exitMenu = new javax.swing.JMenu();
@@ -100,25 +99,19 @@ public class ALLCAPSUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                     .addComponent(jScrollPane2)))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(173, 173, 173)
-                        .addComponent(progressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(jLabel1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(progressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -136,29 +129,27 @@ public class ALLCAPSUI extends javax.swing.JFrame {
             outputTextArea.setText("");
         } else {
         Lexical lex = new Lexical(editorTextArea.getText(),new SymbolTable());
-        progressLabel.setText("Lexical Analysis");
         lex.generateLexemes();
         ArrayList<Token> tok = lex.fillSymbolTable();
         lex.symbolTable.display();
         Parser p = new Parser(tok);
-        progressLabel.setText("Syntax Analysis");
         boolean check = p.LLParser();
            if(check == true){
                outputTextArea.setText("Syntax Error..");
            } else {
-               outputTextArea.setText("Successful Syntax Analysis");
                ParseTree tree = p.grabTree();
                ASTConverter ast = new ASTConverter();
                ast.convertTree(tree.getRoot());
                ast.displayAST(tree.getRoot());
-               progressLabel.setText("Semantic Analysis");
                SemanticAnalyzer s = new SemanticAnalyzer(tree, lex.symbolTable);
                if(s.getSemanticErrorMessage().equals("Success!")){
-                  outputTextArea.setText(outputTextArea.getText() + "\nSuccessful Semantic Analysis");
-                  progressLabel.setText("Code Generation");
                   Generator g = new Generator(tok);
                   g.convertCode2Java();
-                  g.compileFile();
+                  ArrayList<String> output = g.compileFile();
+                  for(int i=0; i<output.size(); i++){
+                      outputTextArea.setText(outputTextArea.getText() + output.get(i));
+                      outputTextArea.setText(outputTextArea.getText() + "\n");
+                  }
                } else {
                    outputTextArea.setText(outputTextArea.getText() + "\n" + s.getSemanticErrorMessage());
                }
@@ -227,6 +218,5 @@ public class ALLCAPSUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea outputTextArea;
-    private javax.swing.JLabel progressLabel;
     // End of variables declaration//GEN-END:variables
 }

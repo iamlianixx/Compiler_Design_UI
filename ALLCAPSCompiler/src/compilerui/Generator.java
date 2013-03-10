@@ -126,7 +126,8 @@ public class Generator {
        }
    }
    
-   public void compileFile(){
+   public ArrayList<String> compileFile(){
+       ArrayList<String> str = new ArrayList<>();
        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
        if(compiler.run(null, null, null, "NewClass.java")!=0){
            System.out.print("ERROR");
@@ -138,11 +139,12 @@ public class Generator {
            String line=null;
           
            while((line=input.readLine())!=null){
-           System.out.println(line);
+               str.add(line);
            }
        }catch(Exception e){
             System.out.println(e.toString());
             e.printStackTrace();
        }
+       return str;
    }
  }
