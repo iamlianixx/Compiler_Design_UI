@@ -56,6 +56,7 @@ class SymbolTableEntry{
         this.tokenVal = value;
         this.dataType = datatype;
         this.scope = scope;
+        this.parameterValues = new ArrayList<>();
     }
 
     public String getActualValue() {

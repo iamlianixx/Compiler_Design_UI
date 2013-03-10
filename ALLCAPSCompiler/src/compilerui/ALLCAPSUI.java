@@ -44,12 +44,8 @@ public class ALLCAPSUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         progressLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         compileMenu = new javax.swing.JMenu();
+        exitMenu = new javax.swing.JMenu();
 
         jMenu1.setText("jMenu1");
 
@@ -71,32 +67,6 @@ public class ALLCAPSUI extends javax.swing.JFrame {
 
         jLabel1.setText("Output");
 
-        jMenu2.setText("File");
-
-        jMenuItem2.setText("New");
-        jMenu2.add(jMenuItem2);
-
-        jMenuItem3.setText("Open");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
-
-        jMenuItem4.setText("Save");
-        jMenu2.add(jMenuItem4);
-
-        jMenuItem6.setText("Exit");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu2);
-
         compileMenu.setText("Compile");
         compileMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -109,6 +79,14 @@ public class ALLCAPSUI extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(compileMenu);
+
+        exitMenu.setText("Exit");
+        exitMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitMenuMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(exitMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -151,15 +129,6 @@ public class ALLCAPSUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_compileMenuActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
-
     private void compileMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compileMenuMouseClicked
         // TODO add your handling code here:
         outputTextArea.setText(" ");
@@ -185,15 +154,22 @@ public class ALLCAPSUI extends javax.swing.JFrame {
                progressLabel.setText("Semantic Analysis");
                SemanticAnalyzer s = new SemanticAnalyzer(tree, lex.symbolTable);
                if(s.getSemanticErrorMessage().equals("Success!")){
+                  outputTextArea.setText(outputTextArea.getText() + "\nSuccessful Semantic Analysis");
+                  progressLabel.setText("Code Generation");
                   Generator g = new Generator(tok);
                   g.convertCode2Java();
                   g.compileFile();
                } else {
-                   outputTextArea.setText(s.getSemanticErrorMessage());
+                   outputTextArea.setText(outputTextArea.getText() + "\n" + s.getSemanticErrorMessage());
                }
            }
         }
     }//GEN-LAST:event_compileMenuMouseClicked
+
+    private void exitMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMenuMouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuMouseClicked
 
     /**
      * @param args the command line arguments
@@ -243,15 +219,11 @@ public class ALLCAPSUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu compileMenu;
     private javax.swing.JTextArea editorTextArea;
+    private javax.swing.JMenu exitMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea outputTextArea;

@@ -233,7 +233,7 @@ public class LookupTable {
     new LookupMapRow(1,43,94), new LookupMapRow(3,20,93), new LookupMapRow(30,38,81),
     new LookupMapRow(39,30,79), new LookupMapRow(40,30,79), new LookupMapRow(1,44,96),
     new LookupMapRow(3,44,95), new LookupMapRow(11,44,96), new LookupMapRow(19,44,96),
-    new LookupMapRow(20,44,96)};
+    new LookupMapRow(20,44,96), new LookupMapRow(29,44,96)};
        
         symbols = new ArrayList(Arrays.asList(symbolList));
         nonterminals = new ArrayList(Arrays.asList(nonterminalsList));

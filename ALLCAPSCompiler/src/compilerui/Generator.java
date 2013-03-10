@@ -40,21 +40,18 @@ public class Generator {
             }
             
             // if it's an id.
-            else if(tempHolder.equals("var_id") || tempHolder.equals("char_id") || 
+            else if(tempHolder.equals("char_id") || tempHolder.equals("var_id") ||
                     tempHolder.equals("num_id") || tempHolder.equals("string_id"))
-            {
-                writeCode+=tokenList.get(traverse).getInfo();
-            }
-            
+                         writeCode+=tokenList.get(traverse).getInfo();
             //keywords
             else if(tempHolder.equals("IF") || tempHolder.equals("WHILE") || 
                     tempHolder.equals("ELSE") || tempHolder.equals("RETURN")
                     || tempHolder.equals("VOID")){
-                writeCode+=tempHolder.toLowerCase();
+                writeCode+=tempHolder.toLowerCase()+" ";
             }
             
             else if(tempHolder.equals("PRINT"))
-            {writeCode+="System.out.print";  
+            {writeCode+="System.out.println";  
                 callPrint=true;
             }
            
@@ -62,12 +59,11 @@ public class Generator {
             else if(tempHolder.equals("INT") || tempHolder.equals("CHR") ||
                     tempHolder.equals("FLT") || tempHolder.equals("STR"))
             {
-       	String check = tokenList.get(++traverse).getToken();
-                  if(check.equals("FUNC"))
+                String check = tokenList.get(traverse+1).getToken();
+                  
+                if(check.equals("FUNC"))
                     	writeCode+=" public static ";
-                  else if(check.equals("VAR")) //if VAR
-                    writeCode+=" ";  
-               
+              
                   switch (tempHolder) {
                     case "CHR":
                         writeCode+="char ";
@@ -83,6 +79,9 @@ public class Generator {
                         break;
                 }
             }
+            else if(tempHolder.equals("VAR") || tempHolder.equals("FUNC"))
+                writeCode+=" ";
+            
            //logical, relational
             else if(tempHolder.equals("NOT="))
                 writeCode+="!=";
@@ -94,11 +93,6 @@ public class Generator {
            //stoppers and open braces
            else if(tempHolder.equals("}") || tempHolder.equals(";") || tempHolder.equals("{"))
               writeCode+=tempHolder+"\n"+"\t";  
-           else if(tempHolder.equals(")"))
-           {   if(callPrint==true)
-                 writeCode+="+ \" \\n \" )";
-                 
-           }
            else
               writeCode+=tempHolder;  
         }
@@ -132,18 +126,18 @@ public class Generator {
    }
    
    public void compileFile(){
-//       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-//       if(compiler.run(null, null, null, "NewClass.java")!=0){
-//           System.out.print("ERROR");
-//       }
+       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+       if(compiler.run(null, null, null, "NewClass.java")!=0){
+           System.out.print("ERROR");
+       }
        try{
            Runtime rt =Runtime.getRuntime();
-           Process pr= rt.exec("javac NewClass.java");
+           Process pr= rt.exec("java NewClass");
            BufferedReader input= new BufferedReader(new InputStreamReader(pr.getInputStream()));
            String line=null;
           
-           while(input.readLine()!=null){
-           System.out.println(input.readLine());
+           while((line=input.readLine())!=null){
+           System.out.println(line);
            }
        }catch(Exception e){
             System.out.println(e.toString());
