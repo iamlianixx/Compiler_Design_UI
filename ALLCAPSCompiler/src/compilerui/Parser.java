@@ -100,9 +100,10 @@ public class Parser {
         while( validPosition == false && !pNode.getNodeData().equals("<program>")){
             String curProd = pNode.getNodeData();
             // Check for int, char, string, id exception
-            if(curProd.equals("int_id") || curProd.equals("char_id") || curProd.equals("string_id") || curProd.equals("var_id")){
-                pNode.setNodeData(inputStack.peek().getInfo());
-                curProd = pNode.getNodeData();
+            if(curProd.equals("<varname>") || curProd.equals("<character>") || curProd.equals("<number>") || curProd.equals("<string>")){
+                ParseNode temp = pNode.getChildren().get(0);
+                temp.setNodeData(inputStack.peek().getInfo());
+                pNode.getChildren().set(0, temp);
             }
             // Go up to parent
             pNode = pNode.getParent();

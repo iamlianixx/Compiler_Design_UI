@@ -162,9 +162,9 @@ public class ALLCAPSUI extends javax.swing.JFrame {
 
     private void compileMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compileMenuMouseClicked
         // TODO add your handling code here:
-        outputTextArea.setText("");
+        outputTextArea.setText(" ");
         if(editorTextArea.getText().equals("")){
-            outputTextArea.setText(null);
+            outputTextArea.setText("");
         } else {
         Lexical lex = new Lexical(editorTextArea.getText(),new SymbolTable());
         progressLabel.setText("Lexical Analysis");
@@ -182,6 +182,15 @@ public class ALLCAPSUI extends javax.swing.JFrame {
                ASTConverter ast = new ASTConverter();
                ast.convertTree(tree.getRoot());
                ast.displayAST(tree.getRoot());
+               progressLabel.setText("Semantic Analysis");
+               SemanticAnalyzer s = new SemanticAnalyzer(tree, lex.symbolTable);
+               if(s.getSemanticErrorMessage().equals("Success!")){
+                  Generator g = new Generator(tok);
+                  g.convertCode2Java();
+                  g.compileFile();
+               } else {
+                   outputTextArea.setText(s.getSemanticErrorMessage());
+               }
            }
         }
     }//GEN-LAST:event_compileMenuMouseClicked
