@@ -31,7 +31,7 @@ public class LookupTable {
         String[] symbolList = {"char_id","num_id","string_id","var_id", ";", 
         "_",".", "=", ",", "{","}", "(", ")","+", "-", "/", "*", "<", ">", "'",
         "\"","AND", "OR", "NOT=", "INT", "CHR","FLT", "STR", "VAR", "FUNC", "MAIN", 
-        "IF", "THEN", "WHILE", "ELSE", "$", "RETURN", "PRINT", "VOID",">=","<="};
+        "IF", "THEN", "WHILE", "ELSE", "$", "RETURN", "PRINT", "VOID",">=","<=", "=="};
         String[] nonterminalsList = {
         "<character>",
         "<number>",
@@ -176,6 +176,7 @@ public class LookupTable {
         "<number>",
         "<varname> <assignment>",
         "<value>",
+        "EPSILON",
         "EPSILON"};
         
         LookupMapRow[] mapArray = {new LookupMapRow(0,0,0), new LookupMapRow(1,1,1),
@@ -187,7 +188,7 @@ public class LookupTable {
     new LookupMapRow(17,4,17), new LookupMapRow(18,4,16), new LookupMapRow(19,5,4),
     new LookupMapRow(20,5,5), new LookupMapRow(13,6,18), new LookupMapRow(14,6,19),
     new LookupMapRow(15,6,20), new LookupMapRow(16,6,21), new LookupMapRow(17,7,23),
-    new LookupMapRow(18,7,22), new LookupMapRow(23,7,25), new LookupMapRow(7,7,24),
+    new LookupMapRow(18,7,22), new LookupMapRow(23,7,25), new LookupMapRow(41,7,24), 
     new LookupMapRow(39,7,26), new LookupMapRow(40,7,27), 
     new LookupMapRow(11,8,27), new LookupMapRow(21,9,28), new LookupMapRow(22,9,29),
     new LookupMapRow(24,10,30), new LookupMapRow(25,10,31), new LookupMapRow(26,10,32),
@@ -234,7 +235,9 @@ public class LookupTable {
     new LookupMapRow(1,43,94), new LookupMapRow(3,20,93), new LookupMapRow(30,38,81),
     new LookupMapRow(39,30,79), new LookupMapRow(40,30,79), new LookupMapRow(1,44,96),
     new LookupMapRow(3,44,95), new LookupMapRow(11,44,96), new LookupMapRow(19,44,96),
-    new LookupMapRow(20,44,96), new LookupMapRow(12,17,97)};
+    new LookupMapRow(20,44,96), new LookupMapRow(29,44,96), new LookupMapRow(12,17,97),
+    new LookupMapRow(12,22,98), new LookupMapRow(29,42,89), new LookupMapRow(41,30,79),
+    new LookupMapRow(37,25,67), new LookupMapRow(36,25,67)};
        
         symbols = new ArrayList(Arrays.asList(symbolList));
         nonterminals = new ArrayList(Arrays.asList(nonterminalsList));

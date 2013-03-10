@@ -175,7 +175,9 @@ public class LookupTable {
         "<varname> <assignmentStatement> ; <statement>",
         "<number>",
         "<varname> <assignment>",
-        "<value>"};
+        "<value>",
+        "EPSILON",
+        "EPSILON"};
         
         LookupMapRow[] mapArray = {new LookupMapRow(0,0,0), new LookupMapRow(1,1,1),
     new LookupMapRow(2,2,2), new LookupMapRow(3,3,3), new LookupMapRow(4,4,6),
@@ -233,7 +235,8 @@ public class LookupTable {
     new LookupMapRow(1,43,94), new LookupMapRow(3,20,93), new LookupMapRow(30,38,81),
     new LookupMapRow(39,30,79), new LookupMapRow(40,30,79), new LookupMapRow(1,44,96),
     new LookupMapRow(3,44,95), new LookupMapRow(11,44,96), new LookupMapRow(19,44,96),
-    new LookupMapRow(20,44,96), new LookupMapRow(29,44,96)};
+    new LookupMapRow(20,44,96), new LookupMapRow(29,44,96), new LookupMapRow(12,17,97),
+    new LookupMapRow(12,22,98), new LookupMapRow(37,25,67), new LookupMapRow(36,25,67)};
        
         symbols = new ArrayList(Arrays.asList(symbolList));
         nonterminals = new ArrayList(Arrays.asList(nonterminalsList));

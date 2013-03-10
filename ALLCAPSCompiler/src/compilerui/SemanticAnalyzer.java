@@ -12,8 +12,9 @@ import java.util.ArrayList;
  */
 public class SemanticAnalyzer {
     private ParseTree parseTree;
-    private ArrayList<String> program = new ArrayList<>();
+    private ArrayList<String> program;
     private ArrayList<ArrayList<String>> assignList;
+    private ArrayList<ArrayList<String>> relationalList;
     private ArrayList<ArrayList<String>> funcList;
     private SymbolTable symTab;
     private String semanticErrorMessage = "Success!";
@@ -23,18 +24,18 @@ public class SemanticAnalyzer {
     public SemanticAnalyzer(ParseTree parseTree, SymbolTable symTab) {
         this.parseTree = parseTree;
         this.symTab = symTab;
-        
+        this.program = new ArrayList<>();
         storeTokens(parseTree.getRoot());
         checkDuplicates();
         takeAssignments();
-        checkAssignments();
+        takeRelationalStatements();
+        checkLeftAndRightValues(relationalList);
         takeFunctions();
         checkFunctionCalls();
         this.checkPrintCalls();
-        
+        System.out.println(semanticErrorMessage);
         
     }
-    
     
     private void storeTokens(ParseNode node) {
         ArrayList <ParseNode> children = node.getChildren();
@@ -45,7 +46,7 @@ public class SemanticAnalyzer {
             }
         }
         else{
-            if(node.getNodeData().equals("^"))
+            if(!node.getNodeData().equals("^"))
                 program.add(node.getNodeData());
         }
     }
@@ -64,32 +65,72 @@ public class SemanticAnalyzer {
                     assign.add(program.get(i-1));
                     assign.add(symTab.table.get(symTab.searchTable(assign.get(0))).getDataType());
                     assign.add(symTab.table.get(symTab.searchTable(assign.get(0))).getScope());
-                    
+
                     if(program.get(i+1).equals("'")||program.get(i+1).equals("\"")){ //checks if a CHR or STR comes after =
                         rightVal.add(program.get(i+1) + program.get(i+2));
                     }
-                    else if(program.get(i+2).equals(";")){ 
-                        rightVal.add(program.get(i+1));
-                    }
-                    else if(!program.get(i+1).equals("=")&&!program.get(i+1).equals("FUNC")) {
-                        for(i=i+2; !program.get(i).equals(";"); i+=2){
-                            rightVal.add(program.get(i-1));
+                    
+                    for (i++; !program.get(i).equals(";"); i++) {
+                        if(!program.get(i).equals("+") && !program.get(i).equals("-") &&
+                           !program.get(i).equals("*") && !program.get(i).equals("/") &&
+                           !program.get(i).equals("(") && !program.get(i).equals(")") &&
+                           !program.get(i).equals("FUNC")) {
+                            rightVal.add(program.get(i));
                         }
-                        rightVal.add(program.get(i-1));
                     }
+                    
                     for(int j=0; j<rightVal.size(); j++){
                         assign.add(rightVal.get(j));
                     }
                     assignList.add(assign);
                 }
                 else{
-                    this.setUndeclaredVariableMessage();
+                    this.setUndeclaredVariableMessage(program.get(i-1));
                     this.setFlag();
                 }
             }
         }
         
     }
+    
+    private void takeRelationalStatements(){
+        int i;
+        relationalList = new ArrayList<>();
+        ArrayList<String> relation, rightVal = new ArrayList<>();
+        for(i=0; flag == 0 && i<program.size(); i++){
+            if(program.get(i).equals("==") || program.get(i).equals("NOT=") ||
+               program.get(i).equals("<=") || program.get(i).equals(">=") ||
+               program.get(i).equals("<") || program.get(i).equals(">")){ //encounters an relational operator
+                System.out.println("Variable: " + program.get(i-1));
+                System.out.println(symTab.searchTable(program.get(i-1)));
+                if(symTab.searchTable(program.get(i-1)) != -1){ //checks if the left value has been declared
+                    relation = new ArrayList();
+                    relation.add(program.get(i-1));
+                    relation.add(symTab.table.get(symTab.searchTable(relation.get(0))).getDataType());
+                    relation.add(symTab.table.get(symTab.searchTable(relation.get(0))).getScope());
+                    
+                    for (i++; !program.get(i).equals("{"); i++) {
+                        if(!program.get(i).equals("+") && !program.get(i).equals("-") &&
+                           !program.get(i).equals("*") && !program.get(i).equals("/") &&
+                           !program.get(i).equals("(") && !program.get(i).equals(")")) {
+                            rightVal.add(program.get(i));
+                        }
+                    }
+                    
+                    for(int j=0; j<rightVal.size(); j++){
+                        relation.add(rightVal.get(j));
+                    }
+                    relationalList.add(relation);
+                }
+                else{
+                    this.setUndeclaredVariableMessage(program.get(i-1));
+                    this.setFlag();
+                }
+            }
+        }
+        
+    }
+    
     //checks whether the right value has the same data type as the left value
     private boolean checkDatatype(String val, String datatype){ 
         boolean result = false;
@@ -132,25 +173,41 @@ public class SemanticAnalyzer {
     // checks the datatype of the variable found at the right side of the assignment statement
     // used if the rvalue is a variable
     private boolean checkVarType(String var, String datatype){
+        boolean ret = false;
+        System.out.println("checkvartype value: " + var);
         if(symTab.searchTable(var) != -1) {
             if(symTab.table.get(symTab.searchTable(var)).getDataType().equals(datatype)){
-                return true;
-            }
-            else{
-                return false;
+                ret = true;
+                System.out.println(var + "true checkvartype");
             }
         }
-        else return false;
+        else { 
+            for(int i = 0; i <= symTab.lastIndex(); i++) {
+                for(int j = 0; !symTab.table.get(i).getParameterValues().isEmpty() && 
+                        j < symTab.table.get(i).getParameterValues().size(); j++) {
+                    if(symTab.table.get(i).getParameterValues().get(j).getValue().equals(var)) {
+                        if(symTab.table.get(i).getParameterValues().get(j).getDatatype().equals(datatype)) {
+                            ret = true;
+                            System.out.println("value:" + symTab.table.get(i).getParameterValues().get(j).getValue());
+                        }
+                        else {
+                            ret = false;
+                        }
+                    }
+                }
+            }
+        }
+        return ret;
     }
         
-    private void checkAssignments(){ //type checking
+    private void checkLeftAndRightValues(ArrayList<ArrayList<String>> list){ //type checking
         int i;
-        for(i=0; flag == 0 && i<assignList.size(); i++){
-            for(int j=3; flag == 0 && j<assignList.get(i).size(); j++){
-                if(!checkDatatype(assignList.get(i).get(j), assignList.get(i).get(1))){ 
-                    if(assignList.get(i).get(j).charAt(0) >= 97 &&
-                       assignList.get(i).get(j).charAt(0) <= 122) {
-                        this.setUndeclaredVariableMessage();
+        for(i=0; flag == 0 && i<list.size(); i++){
+            for(int j=3; flag == 0 && j<list.get(i).size(); j++){
+                if(!checkDatatype(list.get(i).get(j), list.get(i).get(1))){ 
+                    if(list.get(i).get(j).charAt(0) >= 97 &&
+                       list.get(i).get(j).charAt(0) <= 122) {
+                        this.setUndeclaredVariableMessage(list.get(i).get(j));
                     } else {
                         this.setTypeMismatchMessage();
                     }
@@ -174,26 +231,32 @@ public class SemanticAnalyzer {
             if(program.get(i).equals("FUNC")){ //encounters FUNC 
                 if(program.get(i-1).equals("VOID")||program.get(i-1).equals("INT")|| //checks if return type comes before keyword FUNC
                         program.get(i-1).equals("FLT")||program.get(i-1).equals("CHR")||program.get(i-1).equals("STR")){
+                    System.out.println("func dec found");
                     if(symTab.searchTable(program.get(i+1)) != -1){
                         func = new ArrayList<>();
                         func.add(program.get(i+1));
                         func.add(symTab.table.get(symTab.searchTable(func.get(0))).getDataType());
                         
                         for(;!program.get(i).equals(")");i++){ //loop to count number of commas
+                            System.out.println("sud loop");
                             if(program.get(i).equals(",")){
-                                params.add(program.get(i-1));
+                                params.add(program.get(i-2));
                                 commactr++;
                             }
                         }
                         if(!program.get(i-1).equals("(")){
+                            params.add(program.get(i-2));
                             noOfParams = commactr + 1;
                         }
+                        
+                        for(int ctr = 0; ctr<params.size(); ctr++){System.out.println("params: " +params.get(ctr));}
                         
                         func.add(Integer.toString(noOfParams));
                         
                         if(!params.isEmpty()){
                             for(int j=0; j<params.size(); j++){
-                                func.add(symTab.table.get(symTab.searchTable(program.get(i-1))).getParameterValues().get(j).getDatatype());
+                                func.add(params.get(j));
+                                System.out.println("parameter datatypes: " + func.get(j));
                             }
                         }
                         funcList.add(func);
@@ -225,7 +288,7 @@ public class SemanticAnalyzer {
         for(int i = symTab.table.size()-1; flag == 0 && i > 0; i--) {
             for(int j = i-1; flag == 0 && j > 0; j--) {
                 if (symTab.table.get(i).getToken().equals(symTab.table.get(j).getToken())) {
-                    if (symTab.table.get(i).getScope().equals(symTab.table.get(j).getScope()) || 
+                    if (symTab.table.get(i).getScope().equals(symTab.table.get(j).getScope()) && 
                         symTab.table.get(i).getParameterValues() == symTab.table.get(j).getParameterValues()) {
                         this.setDuplicateMessage(symTab.table.get(i).getTokenVal());
                         this.setFlag();
@@ -236,7 +299,7 @@ public class SemanticAnalyzer {
     }
     
     private void checkFunctionCalls(){ //checks if function calls are valid
-        int i, j, commactr, noOfParams = 0; 
+        int i, j, k, commactr, noOfParams = 0; 
         ArrayList<String> func;
         funcList = new ArrayList<>();
         ArrayList<String> params = new ArrayList<>();
@@ -272,8 +335,8 @@ public class SemanticAnalyzer {
                         //the following for-loop checks if function call has the right number of parameters and if parameters have the right datatypes
                         for(j=0; flag == 0 && j<funcList.size(); j++){
                             if(funcList.get(j).get(0).equals(func.get(0))){
-                                for(int k=1; k<func.size()&&funcList.get(j).get(j).equals(func.get(j)); k++) {}
-                                if(!funcList.get(j).get(j).equals(func.get(j))){
+                                for(k=1; k<func.size() && funcList.get(j).get(k).equals(func.get(k)); k++) {}
+                                if(k != func.size()){
                                     this.setInvalidFuncCallMessage();
                                     this.setFlag();
                                 }
@@ -288,7 +351,7 @@ public class SemanticAnalyzer {
                             }
                         }
                         else { //token before FUNC is not =
-                            if(!func.get(1).equals("VOID")){
+                            if(!func.get(1).equals("VOID")&&!program.get(i-2).equals("PRINT")){
                                 this.setNoLValueMessage();
                                 this.setFlag();
                             }
@@ -342,8 +405,8 @@ public class SemanticAnalyzer {
         this.semanticErrorMessage = "Invalid function call.";
     }
     
-    private void setUndeclaredVariableMessage(){
-        this.semanticErrorMessage = "Variable has not been declared.";
+    private void setUndeclaredVariableMessage(String x){
+        this.semanticErrorMessage = x + " Variable has not been declared.";
     }
     
     private void setUndeclaredFunctionMessage(){

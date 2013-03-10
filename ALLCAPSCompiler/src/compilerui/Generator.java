@@ -79,7 +79,8 @@ public class Generator {
                         break;
                 }
             }
-            else if(tempHolder.equals("VAR") || tempHolder.equals("FUNC"))
+            else if(tempHolder.equals("VAR") || tempHolder.equals("FUNC")||
+                    tempHolder.equals("THEN"))
                 writeCode+=" ";
             
            //logical, relational
