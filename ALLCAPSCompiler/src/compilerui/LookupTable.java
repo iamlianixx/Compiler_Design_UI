@@ -24,7 +24,7 @@ class LookupMapRow{
 }
 
 public class LookupTable {
-    static ArrayList<String> symbols, nonterminals, productionList;
+    public ArrayList<String> symbols, nonterminals, productionList;
     static ArrayList<LookupMapRow> map;
     
     public LookupTable(){
@@ -76,7 +76,8 @@ public class LookupTable {
         "<returnStatement'>",
         "<printStatement>",
         "<printStatement'>",
-        "<assignment'>"};
+        "<assignment'>",
+        "<assignmentStatement'>"};
         String[] productions = {
         "char_id", 
         "num_id", 
@@ -121,7 +122,7 @@ public class LookupTable {
         "<number> <inputNumber'>", 
         "<arithmetic> <inputNumber>", 
         "EPSILON",
-        "= <varname> <assignment>", 
+        "= <assignmentStatement'>", 
         "<arithmetic> <assignment'>",
         "<varname>", 
         "VAR <varname> <variableDeclaration'>",
@@ -162,7 +163,7 @@ public class LookupTable {
         "<functionSet> <MainFunction>",
         "<functionCall>",
         "EPSILON",
-        "RETURN <returnStatement'>",
+        "RETURN <returnStatement'> ;",
         "<varname>",
         "<value>",
         "<returnStatement> <statement>",
@@ -172,7 +173,9 @@ public class LookupTable {
         "<printStatement> <statement>",
         "VOID",
         "<varname> <assignmentStatement> ; <statement>",
-        "<number>"};
+        "<number>",
+        "<varname> <assignment>",
+        "<value>"};
         
         LookupMapRow[] mapArray = {new LookupMapRow(0,0,0), new LookupMapRow(1,1,1),
     new LookupMapRow(2,2,2), new LookupMapRow(3,3,3), new LookupMapRow(4,4,6),
@@ -228,7 +231,9 @@ public class LookupTable {
     new LookupMapRow(7,33,43), new LookupMapRow(13,34,44), new LookupMapRow(14,34,44),
     new LookupMapRow(15,34,44), new LookupMapRow(16,34,44), new LookupMapRow(3,43,45),
     new LookupMapRow(1,43,94), new LookupMapRow(3,20,93), new LookupMapRow(30,38,81),
-    new LookupMapRow(39,30,79), new LookupMapRow(40,30,79)};
+    new LookupMapRow(39,30,79), new LookupMapRow(40,30,79), new LookupMapRow(1,44,96),
+    new LookupMapRow(3,44,95), new LookupMapRow(11,44,96), new LookupMapRow(19,44,96),
+    new LookupMapRow(20,44,96)};
        
         symbols = new ArrayList(Arrays.asList(symbolList));
         nonterminals = new ArrayList(Arrays.asList(nonterminalsList));
@@ -260,12 +265,14 @@ public class LookupTable {
         return res;
     }
         
-    public boolean isTerminal(String in){
-        boolean flag = false;
-        int i;
-        for(i = 0; i < nonterminals.size() && !in.equals(nonterminals.get(i)); i++);
-        if(i<nonterminals.size()) flag = true;
-        return flag;
-       }
+    public boolean isTerminal(String prod){
+        boolean check = false;
+        for(int i=0; check == false && i<this.symbols.size(); i++){
+            if(prod.equals(this.symbols.get(i))){
+                check = true;
+            }
+        }
+        return check;
+    }
         
 }

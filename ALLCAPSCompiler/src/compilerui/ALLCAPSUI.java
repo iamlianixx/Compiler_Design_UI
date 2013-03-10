@@ -50,7 +50,6 @@ public class ALLCAPSUI extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         compileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -109,15 +108,6 @@ public class ALLCAPSUI extends javax.swing.JFrame {
                 compileMenuActionPerformed(evt);
             }
         });
-
-        jMenuItem1.setText("Compile Code");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        compileMenu.add(jMenuItem1);
-
         jMenuBar1.add(compileMenu);
 
         setJMenuBar(jMenuBar1);
@@ -161,21 +151,22 @@ public class ALLCAPSUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_compileMenuActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void compileMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compileMenuMouseClicked
         // TODO add your handling code here:
-                Lexical lex = new Lexical(editorTextArea.getText(),new SymbolTable());
+        outputTextArea.setText("");
+        if(editorTextArea.getText().equals("")){
+            outputTextArea.setText(null);
+        } else {
+        Lexical lex = new Lexical(editorTextArea.getText(),new SymbolTable());
         progressLabel.setText("Lexical Analysis");
         lex.generateLexemes();
         ArrayList<Token> tok = lex.fillSymbolTable();
@@ -187,8 +178,12 @@ public class ALLCAPSUI extends javax.swing.JFrame {
                outputTextArea.setText("Syntax Error..");
            } else {
                outputTextArea.setText("Successful Syntax Analysis");
-
+               ParseTree tree = p.grabTree();
+               ASTConverter ast = new ASTConverter();
+               ast.convertTree(tree.getRoot());
+               ast.displayAST(tree.getRoot());
            }
+        }
     }//GEN-LAST:event_compileMenuMouseClicked
 
     /**
@@ -243,7 +238,6 @@ public class ALLCAPSUI extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
